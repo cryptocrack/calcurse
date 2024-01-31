@@ -228,8 +228,29 @@ void ui_todo_draw(int n, WINDOW *win, int y, int hilt, void *cb_data)
 		}
 		mesg = buf;
 	}
+	
+	/* wbuf stores the wide char string
+		 requires 4 extra chars: <X . space nullchar> */
+	// have to add CFLAG: -DNCURSES_WIDECHAR=1
+	wchar_t wbuf[(strlen(mesg)+2)*2];
+	if (todo->completed) {
+		wcscpy(wbuf, L"X");
+		todo->note ? wcscat(wbuf, L">") : wcscat(wbuf, L".");
+		wcscat(wbuf, L" ");
+		
+		wchar_t temp[2];
+		temp[1] = L'\0';
+		
+		for (size_t i = 0; i < strlen(mesg); i++) {
+			mbstowcs(&temp[0], &mesg[i], 1);
+			wcscat(wbuf, L"\u0336");
+			wcscat(wbuf, temp);
+		}
+	}
 
-	mvwprintw(win, y, 0, "%s%s", mark, mesg);
+	if (todo->completed) {
+		mvwaddnwstr(win, y, 0, wbuf, -1);
+	} else { mvwprintw(win, y, 0, "%s%s", mark, mesg); }
 
 	if (hilt)
 		custom_remove_attr(win, ATTR_HIGHEST);
@@ -293,6 +314,9 @@ void ui_todo_chg_priority(int diff)
 	struct todo *item = ui_todo_selitem();
 
 	if (!item)
+		return;
+
+	if (item->completed)
 		return;
 
 	int id = item->id + diff;
