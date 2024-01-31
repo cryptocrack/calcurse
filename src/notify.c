@@ -139,6 +139,9 @@ void notify_init_vars(void)
 
 	nbar.notify_all = 0;
 
+	if ((nbar.shell = getenv("SHELL")) == NULL)
+	  nbar.shell = "/bin/sh";
+
 	pthread_attr_init(&detached_thread_attr);
 	pthread_attr_setdetachstate(&detached_thread_attr,
 				    PTHREAD_CREATE_DETACHED);
@@ -213,19 +216,64 @@ void notify_reinit_bar(void)
 /* Launch user defined command as a notification. */
 unsigned notify_launch_cmd(void)
 {
-	char const *arg[2] = { nbar.cmd, NULL };
-	int pid, pin, pout, perr;
+	int pid;
+	char *cmdbuf, *p, *q, *datestr;
 
 	if (notify_app.state & APOINT_NOTIFIED)
-		return 1;
-
+		return 2;
 	notify_app.state |= APOINT_NOTIFIED;
 
-	if ((pid = shell_exec(&pin, &pout, &perr, 1, *arg, arg))) {
-		close(pin);
-		close(pout);
-		close(perr);
+	/*
+	 * Expand the shell command. Note that nbar.cmd contains at most
+	 * LINEBUF characters.
+	 */
+	cmdbuf = mem_malloc(2 * BUFSIZ + strlen(notify_app.txt));
+	for (p = nbar.cmd, q = cmdbuf; *p; p++) {
+		if (*p == '%') {
+			p++;
+			switch (*p) {
+			case 'd': /* date */
+				datestr = date_sec2date_str(notify_app.time, "%F %T");
+				strcpy(q, datestr);
+				q += strlen(datestr);
+				mem_free(datestr);
+				break;
+			case 'm': /* message */
+				strcpy(q, notify_app.txt);
+				q += strlen(notify_app.txt);
+				break;
+			case 't': /* time */
+				datestr = date_sec2date_str(notify_app.time, "%H:%M");
+				strcpy(q, datestr);
+				q += strlen(datestr);
+				mem_free(datestr);
+				break;
+			case '%':
+				*q++ = '%';
+				break;
+			default:
+				*q++ = '%';
+				*q++ = *p;
+			}
+		} else
+			*q++ = *p;
 	}
+	*q = '\0';
+
+	pid = fork();
+	if (pid < 0) {
+		ERROR_MSG(_("error while launching command: could not fork"));
+		return 0;
+	} else if (pid == 0) {
+		/* Child: launch user defined command */
+	  if (execlp(nbar.shell, nbar.shell, "-c", cmdbuf, NULL) <
+		    0) {
+			ERROR_MSG(_("error while launching command"));
+			_exit(1);
+		}
+		_exit(0);
+	} else
+		mem_free(cmdbuf);
 
 	return 1;
 }
