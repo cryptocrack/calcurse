@@ -824,8 +824,8 @@ char *new_tempfile(const char *prefix)
 	if (prefix == NULL)
 		return NULL;
 
-	asprintf(&fullname, "%s.XXXXXX", prefix);
-	if ((fd = mkstemp(fullname)) == -1
+	asprintf(&fullname, "%s.XXXXXX.md", prefix);
+	if ((fd = mkstemps(fullname, 3)) == -1
 	    || (file = fdopen(fd, "w+")) == NULL) {
 		if (fd != -1) {
 			unlink(fullname);
