@@ -604,8 +604,8 @@ if os.path.isdir(os.path.expanduser("~/.calcurse")):
 else:
     xdg_config_home = os.getenv("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))
     xdg_data_home = os.getenv("XDG_DATA_HOME", os.path.expanduser("~/.local/share"))
-    caldav_config = os.path.join(xdg_config_home, "calcurse", "caldav")
-    caldav_data = os.path.join(xdg_data_home, "calcurse", "caldav")
+    caldav_config = os.getenv("CALCURSE_CALDAV_CONFIG_DIR") or os.path.join(xdg_config_home, "calcurse", "caldav")
+    caldav_data = os.getenv("CALCURSE_CALDAV_DATA_DIR") or os.path.join(xdg_data_home, "calcurse", "caldav")
     check_dir(caldav_config)
     check_dir(caldav_data)
 
