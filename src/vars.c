@@ -42,11 +42,11 @@
 /*
  * variables to store window size
  */
-int col = 0, row = 0;
-int resize = 0;
+int col, row;
+int resize;
 
 /* variable to tell if the terminal supports color */
-unsigned colorize = 0;
+unsigned colorize;
 
 /* Default background and foreground colors. */
 int foreground, background;
@@ -59,13 +59,13 @@ int foreground, background;
 enum ui_mode ui_mode = UI_CMDLINE;
 
 /* Don't save anything if this is set. */
-int read_only = 0;
+int read_only;
 
 /* Hide import/export message if set. */
-int quiet = 0;
+int quiet;
 
 /* Applications can trigger a reload by sending SIGUSR1. */
-int want_reload = 0;
+int want_reload;
 
 /* Strings describing each input date format. */
 const char *datefmt_str[DATE_FORMATS];
@@ -79,17 +79,17 @@ int days[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
  * variables to store data path names, which are initialized in
  * io_init()
  */
-char *path_ddir = NULL;
-char *path_cdir = NULL;
-char *path_todo = NULL;
-char *path_apts = NULL;
-char *path_conf = NULL;
-char *path_notes = NULL;
-char *path_keys = NULL;
-char *path_cpid = NULL;
-char *path_dpid = NULL;
-char *path_dmon_log = NULL;
-char *path_hooks = NULL;
+char *path_ddir;
+char *path_cdir;
+char *path_todo;
+char *path_apts;
+char *path_conf;
+char *path_notes;
+char *path_keys;
+char *path_cpid;
+char *path_dpid;
+char *path_dmon_log;
+char *path_hooks;
 
 /* Variable to store global configuration. */
 struct conf conf;

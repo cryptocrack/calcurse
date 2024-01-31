@@ -43,9 +43,9 @@
 #include "calcurse.h"
 
 static vector_t day_items;
-static unsigned day_items_nb = 0;
+static unsigned day_items_nb;
 
-struct day_item empty_day = { 0, 0, 0, {NULL}};
+struct day_item empty_day;
 
 /*
  * The day vector, day_items, is continuously rebuilt for display as the
@@ -54,7 +54,7 @@ struct day_item empty_day = { 0, 0, 0, {NULL}};
  * here that may later be used to refind the item in the rebuilt day
  * vector.
  */
-static struct day_item sel_data = { 0, 0, 0, {NULL}};
+static struct day_item sel_data;
 
 /*
  * Save the item to become the selected APP item.

@@ -37,7 +37,7 @@
 #include "calcurse.h"
 #include <ctype.h>
 
-static unsigned ui_todo_view = 0;
+static unsigned ui_todo_view;
 
 static struct todo *ui_todo_selitem(void)
 {
