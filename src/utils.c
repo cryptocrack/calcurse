@@ -178,13 +178,26 @@ void warnbox(const char *msg)
 /*
  * Print a message in the status bar.
  * Message texts for first line and second line are to be provided.
+ * If the first line is longer than the number of columns, the 
+ * second line is offset to allow for both strings to be viewed
  */
 void status_mesg(const char *msg1, const char *msg2)
 {
+	int offset = 0;
+
 	wins_erase_status_bar();
 	custom_apply_attr(win[STA].p, ATTR_HIGHEST);
 	mvwaddstr(win[STA].p, 0, 0, msg1);
-	mvwaddstr(win[STA].p, 1, 0, msg2);
+
+	if (col < strlen(msg1) && col > strlen(msg1) - col + strlen(msg2)) {
+		offset = strlen(msg1) - col;
+		if (col - offset - strlen(msg2) > 5) {
+			mvwaddstr(win[STA].p, 1, offset, "  |  ");
+			offset += 5;
+		}
+	}
+
+	mvwaddstr(win[STA].p, 1, offset, msg2);
 	custom_remove_attr(win[STA].p, ATTR_HIGHEST);
 	wins_wrefresh(win[STA].p);
 }
