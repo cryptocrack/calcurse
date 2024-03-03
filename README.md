@@ -9,7 +9,7 @@
 
 calcurse is available on a number of Linux distributions:
 
-[![Packaging status](https://repology.org/badge/vertical-allrepos/calcurse.svg)](https://repology.org/project/calcurse/versions)
+[![Packaging status](https://repology.org/badge/vertical-allrepos/calcurse.svg?columns=3)](https://repology.org/project/calcurse/versions)
 
 ## Building from Source
 
