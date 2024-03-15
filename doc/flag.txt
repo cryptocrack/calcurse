@@ -2,10 +2,11 @@ Flag Item
 =========
 
 Toggle an appointment's 'important' flag or a todo's 'completed' flag.  If a
-todo is flagged as completed, its priority number will be replaced by an 'X'
-sign. Completed tasks will no longer appear in exported data or when using the
-'-t' command line flag (unless specifying '0' as the priority number, in which
-case only completed tasks will be shown).
+todo is flagged as completed, its priority number will be inverted/made
+negative and it will disappear from the list. Completed tasks will no longer
+appear in exported data or when using the '-t' command line flag (unless
+specifying '0' as the priority number, in which case only completed tasks will
+be shown).
 
 If an appointment is flagged as important, an exclamation mark appears in front
 of it, and you will be warned if time gets close to the appointment start time.
