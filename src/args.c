@@ -85,7 +85,8 @@ enum {
 	OPT_STATUS,
 	OPT_DAEMON,
 	OPT_INPUT_DATEFMT,
-	OPT_OUTPUT_DATEFMT
+	OPT_OUTPUT_DATEFMT,
+  OPT_PATTERN_ICASE
 };
 
 /*
@@ -412,6 +413,7 @@ int parse_args(int argc, char **argv)
 	time_t from = -1, to = -1;
 	int range = 0;
 	int limit = INT_MAX;
+  int flag_case_insensitive = 0;
 	/* Filters */
 	struct item_filter filter = { 0, 0, NULL, NULL, -1, -1, -1, -1, 0, 0, 0 };
 	/* Format strings */
@@ -497,6 +499,7 @@ int parse_args(int argc, char **argv)
 		{"daemon", no_argument, NULL, OPT_DAEMON},
 		{"input-datefmt", required_argument, NULL, OPT_INPUT_DATEFMT},
 		{"output-datefmt", required_argument, NULL, OPT_OUTPUT_DATEFMT},
+		{"pattern-case-insensitive", no_argument, NULL, OPT_PATTERN_ICASE},
 		{NULL, no_argument, NULL, 0}
 	};
 
@@ -652,11 +655,14 @@ int parse_args(int argc, char **argv)
 			filter.hash = mem_strdup(optarg);
 			filter_opt = 1;
 			break;
+		case OPT_PATTERN_ICASE:
+      flag_case_insensitive = REG_ICASE;
+			break;
 		case 'S':
 		case OPT_FILTER_PATTERN:
 			EXIT_IF(filter.regex,
 				_("cannot handle more than one regular expression"));
-			if (regcomp(&reg, optarg, REG_EXTENDED))
+			if (regcomp(&reg, optarg, REG_EXTENDED | flag_case_insensitive))
 				EXIT(_("could not compile regular expression: %s"), optarg);
 			filter.regex = &reg;
 			filter_opt = 1;

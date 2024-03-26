@@ -317,6 +317,9 @@ from that session will be lost without warning!
   converted and echoed to stdout. Two formats are available: +ical+ and
   +pcal+. The default 'format' is +ical+.
 
+*--pattern-case-insensitive*::
+  Interpret the pattern in *--filter-pattern* as case insensitive.
+
 FILTER OPTIONS
 --------------
 
@@ -352,7 +355,8 @@ General filters
 
 *--filter-pattern* 'pattern'::
   Include items with a description that matches the pattern. The pattern is
-  interpreted as an extended regular expression.
+  interpreted as an extended regular expression. By default, this is case
+  sensitive. To make it case insensitive, use *--pattern-case-insensitive*.
 
 *--filter-hash* 'string'::
   Include items with a hash starting with 'string'. The filter can be negated
