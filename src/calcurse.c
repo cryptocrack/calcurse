@@ -267,16 +267,16 @@ static inline void key_generic_save(void)
 	wins_update(FLAG_ALL);
 	switch (ret) {
 	case IO_SAVE_CTINUE:
-		msg = _("Data were saved successfully");
+		msg = _("Data was saved successfully");
 		break;
 	case IO_SAVE_RELOAD:
-		msg = _("Data were saved/reloaded successfully");
+		msg = _("Data was saved/reloaded successfully");
 		break;
 	case IO_SAVE_CANCEL:
 		msg = _("Save cancelled");
 		break;
 	case IO_SAVE_NOOP:
-		msg = _("Data were already saved");
+		msg = _("Data was already saved");
 		break;
 	case IO_SAVE_ERROR:
 		EXIT(_("Cannot open data file"));
@@ -303,16 +303,16 @@ static inline void key_generic_reload(void)
 	switch (ret) {
 	case IO_RELOAD_LOAD:
 	case IO_RELOAD_CTINUE:
-		msg = _("Data were reloaded successfully");
+		msg = _("Data was reloaded successfully");
 		break;
 	case IO_RELOAD_MERGE:
-		msg = _("Date were merged/reloaded successfully");
+		msg = _("Date was merged/reloaded successfully");
 		break;
 	case IO_RELOAD_CANCEL:
 		msg = _("Reload cancelled");
 		break;
 	case IO_RELOAD_NOOP:
-		msg = _("Data were already loaded");
+		msg = _("Data was already loaded");
 		break;
 	case IO_RELOAD_ERROR:
 		EXIT(_("Cannot open data file"));
